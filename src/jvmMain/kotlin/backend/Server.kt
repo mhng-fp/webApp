@@ -1,5 +1,6 @@
 package org.example.backend
 
+import ShoppingListDataModel
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -17,8 +18,8 @@ import io.netty.handler.codec.compression.StandardCompressionOptions.gzip
 import java.io.File
 
 val shoppingList = mutableListOf(
-    ShoppingListItem("Orange", 1),
-    ShoppingListItem("Apple", 2)
+    ShoppingListDataModel("Orange", 1),
+    ShoppingListDataModel("Apple", 2)
 )
 
 
@@ -49,7 +50,7 @@ class Server {
                     }
 
                     post {
-                        shoppingList += call.receive<ShoppingListItem>()
+                        shoppingList += call.receive<ShoppingListDataModel>()
                         call.respond(HttpStatusCode.OK)
                     }
                 }

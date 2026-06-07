@@ -27,16 +27,17 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-serialization-kotlinx-json:3.5.0")
             }
         }
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-server-core:3.0.1")
-                implementation("io.ktor:ktor-server-netty:3.0.1")
-                implementation("io.ktor:ktor-server-content-negotiation:3.0.1")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
-                implementation("io.ktor:ktor-server-cors-jvm:3.0.1")
-                implementation("io.ktor:ktor-server-compression-jvm:3.0.1")
+                implementation("io.ktor:ktor-server-core:3.5.0")
+                implementation("io.ktor:ktor-server-netty:3.5.0")
+                implementation("io.ktor:ktor-server-content-negotiation:3.5.0")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:3.5.0")
+                implementation("io.ktor:ktor-server-cors-jvm:3.5.0")
+                implementation("io.ktor:ktor-server-compression-jvm:3.5.0")
             }
         }
         val jvmTest by getting {
@@ -45,6 +46,9 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-core:3.5.0")
+                implementation("io.ktor:ktor-client-content-negotiation:3.5.0")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:3.5.0")
             }
         }
         val jsTest by getting {
