@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("multiplatform") version "2.4.0"
     kotlin("plugin.serialization") version "2.1.10"
 }
 
@@ -10,11 +12,44 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("io.ktor:ktor-server-core:3.0.1")
-    implementation("io.ktor:ktor-server-netty:3.0.1")
-    implementation("io.ktor:ktor-server-content-negotiation:3.0.1")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
-    implementation("io.ktor:ktor-server-cors-jvm:3.0.1")
-    implementation("io.ktor:ktor-server-compression-jvm:3.0.1")
+kotlin {
+    jvm {
+        mainRun {
+            mainClass = "Mainkt"
+        }
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+    }
+    js {
+        browser()
+    }
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-server-core:3.0.1")
+                implementation("io.ktor:ktor-server-netty:3.0.1")
+                implementation("io.ktor:ktor-server-content-negotiation:3.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
+                implementation("io.ktor:ktor-server-cors-jvm:3.0.1")
+                implementation("io.ktor:ktor-server-compression-jvm:3.0.1")
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+            }
+        }
+    }
 }

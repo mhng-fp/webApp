@@ -22,7 +22,7 @@ val shoppingList = mutableListOf(
 )
 
 
-//URL: http://localhost:9090/shoppingList
+//URL: http://localhost:9191/shoppingList
 class Server {
     fun startServer() {
         embeddedServer(Netty, port = 9191) {
@@ -42,7 +42,7 @@ class Server {
             routing {
                 route("/shoppingList") {
                     get {
-                        val file = File("src/main/resources/index.html")
+                        val file = File("src/jvmMain/index.html")
                         call.respondText(
                             text = file.readText(),
                             ContentType.Text.Html)
