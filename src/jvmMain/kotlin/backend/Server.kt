@@ -24,7 +24,7 @@ val shoppingList = mutableListOf(
 )
 
 
-//URL: http://localhost:9191/shoppingList
+//URL: http://localhost:9191/
 fun main() {
         embeddedServer(Netty, port = 9191) {
             install(ContentNegotiation) {
@@ -42,12 +42,15 @@ fun main() {
 
             routing {
                 staticResources("/static", "static")
+                get("/"){
+                    val file = File("src/commonMain/resources/index.html")
+                    call.respondText(
+                        text = file.readText(),
+                        ContentType.Text.Html)
+                }
                 route("/shoppingList") {
                     get {
-                        val file = File("src/commonMain/resources/index.html")
-                        call.respondText(
-                            text = file.readText(),
-                            ContentType.Text.Html)
+                        call.respond(shoppingList)
                     }
                     post {
                         shoppingList += call.receive<ShoppingListDataModel>()

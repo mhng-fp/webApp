@@ -16,7 +16,7 @@ suspend fun getShoppingList(): List<ShoppingListDataModel> {
     return jsonCLient.get("/shoppingList").body()
 }
 
-suspend fun addShoppingList(shoppingListItem: ShoppingListDataModel) {
+suspend fun postShoppingList(shoppingListItem: ShoppingListDataModel) {
     jsonCLient.post("/shoppingList") {
         contentType(ContentType.Application.Json)
         setBody(
