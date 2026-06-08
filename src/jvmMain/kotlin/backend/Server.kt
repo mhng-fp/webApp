@@ -7,6 +7,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.install
 import io.ktor.server.engine.*
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
@@ -24,8 +25,7 @@ val shoppingList = mutableListOf(
 
 
 //URL: http://localhost:9191/shoppingList
-class Server {
-    fun startServer() {
+fun main() {
         embeddedServer(Netty, port = 9191) {
             install(ContentNegotiation) {
                 json()
@@ -41,14 +41,14 @@ class Server {
             }
 
             routing {
+                staticResources("/static", "static")
                 route("/shoppingList") {
                     get {
-                        val file = File("src/jvmMain/index.html")
+                        val file = File("src/commonMain/resources/index.html")
                         call.respondText(
                             text = file.readText(),
                             ContentType.Text.Html)
                     }
-
                     post {
                         shoppingList += call.receive<ShoppingListDataModel>()
                         call.respond(HttpStatusCode.OK)
@@ -56,5 +56,4 @@ class Server {
                 }
             }
             }.start(wait = true)
-        }
 }
