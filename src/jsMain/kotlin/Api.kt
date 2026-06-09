@@ -12,16 +12,13 @@ val jsonCLient  = HttpClient {
     }
 }
 
-suspend fun getShoppingList(): List<ShoppingListDataModel> {
-    return jsonCLient.get("/shoppingList").body()
-}
-
-suspend fun postShoppingList(shoppingListItem: ShoppingListDataModel) {
-    jsonCLient.post("/shoppingList") {
+suspend fun getShortId(longUrl: longUrlDataModel): String {
+    val result = jsonCLient.post("/shorten") {
         contentType(ContentType.Application.Json)
         setBody(
-            shoppingListItem
+            longUrl
         )
     }
+    return result.body()
 }
 

@@ -2,69 +2,74 @@ import react.useState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import react.Props
-import react.useEffectOnce
 import react.FC
-import react.Key
+import react.dom.html.ReactHTML.a
+import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.button
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.li
-import react.dom.html.ReactHTML.ul
+import react.dom.html.ReactHTML.p
 import web.html.text
+import web.window._blank
+import web.cssom.ClassName
 
 private val scope = MainScope()
 
+// This line tells Webpack to fetch the file from your resources folder
+@JsModule("./App.css")
+@JsNonModule
+external val styles: dynamic
 
-val App = FC<Props>{
-    var shoppingList by useState(emptyList<ShoppingListDataModel>())
-    var newItemName by useState("") // Tracks what the user types in the input box
-
-    useEffectOnce {
-        scope.launch {
-            shoppingList = getShoppingList()
-        }
-    }
+val App = FC<Props> {
+    val cssModulesPlaceholder = styles
+    var newLongURL by useState("") // Tracks what the user types in the input box
+    var shortUrlResult by useState("")
 
     h1 {
-        +"Full ShoppingList"
+        +"Hello!"
     }
 
-    // 1. Render the current list of items
-    ul {
-        shoppingList.sortedByDescending(ShoppingListDataModel::priority).forEach { item ->
-            li{
-                key = Key("${item.id}")
-                + "[${item.priority}] ${item.desc}"
-            }
-        }
-    }
-
-    // 2. Add an Input Form
+    // 1. Add an Input Form
     input {
+        className = ClassName("url-input-field")
         type = web.html.InputType.text
-        placeholder = "Add new item..."
-        value = newItemName
+        value = newLongURL
         onChange = { event ->
-            newItemName = event.target.value
+            newLongURL = event.target.value
         }
     }
 
-    // 3. Add the Action Button
+    // 2. Add the Action Button
     button {
-        +"Add Item"
+        +"Get Shortened Link"
         onClick = {
-            if (newItemName.isNotBlank()) {
+            if (newLongURL.isNotBlank()) {
                 scope.launch {
-                    // addShoppingListItem(newItemName)
-                    val priorityToInject = (shoppingList.lastOrNull()?.priority ?: 0) + 1
-                    postShoppingList(ShoppingListDataModel(newItemName, priorityToInject) )
-
-                    // Refresh the list after adding
-                    shoppingList = getShoppingList()
-                    newItemName = "" // Clear the text input box
+                    val response = getShortId(longUrlDataModel(newLongURL))
+                    shortUrlResult = response
+                    newLongURL = "" // Clear the text input box
                 }
             }
         }
     }
-}
 
+    br {}
+    br {}
+
+    // 3. Conditionally display the result container ONLY when shortUrlResult is not empty
+    if (shortUrlResult.isNotBlank()) {
+        div {
+            p {
+                +"Your Shortened Link:"
+            }
+
+            // Display the short URL inside a clickable anchor link tag
+            a {
+                href = shortUrlResult
+                target = web.window.WindowTarget._blank // Opens link in a new tab
+                +shortUrlResult
+            }
+        }
+    }
+}

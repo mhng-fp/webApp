@@ -1,9 +1,7 @@
 package org.example.backend
 
-import ShoppingListDataModel
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.install
 import io.ktor.server.engine.*
@@ -16,24 +14,20 @@ import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.netty.handler.codec.compression.StandardCompressionOptions.gzip
+import longUrlDataModel
 import java.io.File
 
-val shoppingList = mutableListOf(
-    ShoppingListDataModel("Orange", 1),
-    ShoppingListDataModel("Apple", 2)
-)
+val shortener = UrlShortener()
 
-
-//URL: http://localhost:9191/
+//URL to hit: http://localhost:8080/
 fun main() {
-        embeddedServer(Netty, port = 9191) {
+        embeddedServer(Netty, port = 8080) {
             install(ContentNegotiation) {
                 json()
             }
             install(CORS) {
                 allowMethod(HttpMethod.Get)
                 allowMethod(HttpMethod.Post)
-                allowMethod(HttpMethod.Delete)
                 anyHost()
             }
             install(Compression) {
@@ -48,13 +42,22 @@ fun main() {
                         text = file.readText(),
                         ContentType.Text.Html)
                 }
-                route("/shoppingList") {
-                    get {
-                        call.respond(shoppingList)
-                    }
+                get("/urlToIdMap") {
+                    call.respond(shortener.urlToIdMap)
+                }
+                get("/idToUrlMap") {
+                    call.respond(shortener.idToUrlMap)
+                }
+                route("/shorten") {
                     post {
-                        shoppingList += call.receive<ShoppingListDataModel>()
-                        call.respond(HttpStatusCode.OK)
+                        val longUrl = call.receive<longUrlDataModel>()
+                        val shortId= shortener.shorten(longUrl.longUrl)
+                        call.respond(shortId)
+                    }
+                    get("/{id}") {
+                        val shortId = call.parameters["id"] ?: ""
+                        val longUrl = shortener.resolve(shortId) ?: ""
+                        call.respondRedirect(longUrl, permanent = false)
                     }
                 }
             }

@@ -24,11 +24,15 @@ kotlin {
             jvmTarget = JvmTarget.JVM_1_8
         }
     }
-
     js {
         browser {
-            binaries.executable()
+            commonWebpackConfig {
+                cssSupport {
+                    enabled = true
+                }
+            }
         }
+        binaries.executable()
     }
     sourceSets {
         val commonMain by getting {
