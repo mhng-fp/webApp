@@ -1,18 +1,19 @@
 # 🔗 Kotlin Multiplatform URL Shortener
 
-Kotlin-React URL Shortener is a web application designed to instantly transform long, unwieldy URLs into clean, shareable aliases.
+This is a web application designed to instantly transform long, unwieldy URLs into clean, shareable aliases.
 This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface.
 
 ---
 
 ## 📺 Demo
 
-<video src="/demo.mov" width="100%" controls></video>
+<video src="webApp/demo.mov" width="100%" controls></video>
 
 ---
 
 ## 🛠️ Tech Stack
 
+This project is structured as a **full-stack monorepo**
 *   **Backend:** Kotlin JVM, Ktor Server 3.5.0 (Netty engine)
 *   **Frontend:** Kotlin/JS browser app with Kotlin-React wrappers
 *   **Shared Logic:** Kotlinx Serialization for JSON data exchange
