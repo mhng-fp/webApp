@@ -14,6 +14,7 @@ import react.dom.html.ReactHTML.p
 import web.html.text
 import web.window._blank
 import web.cssom.ClassName
+import react.ChildrenBuilder
 
 private val scope = MainScope()
 
@@ -21,72 +22,112 @@ private val scope = MainScope()
 @JsNonModule
 external val styles: dynamic
 
+// --- Main App ---
 val App = FC<Props> {
     val cssModulesPlaceholder = styles
     var newLongURL by useState("")
     var shortUrlResult by useState("")
     var errorMessage by useState("")
 
-    h1 {
-        +"Hello!"
-    }
+    // Main Tree Layout
+    renderTitle()
+    renderInput(
+        currentValue = newLongURL,
+        onValueChange = { newValue -> newLongURL = newValue }
+    )
+    renderButton(onButtonClick = {
+        handleSubmit(
+            inputUrl = newLongURL,
+            setLongUrl = { newLongURL = it },
+            setShortUrl = { shortUrlResult = it },
+            setError = { errorMessage = it }
+        )
+    })
+    renderLineBreaker()
+    renderLineBreaker()
+    renderErrorDisplay(message = errorMessage)
+    renderSuccessDisplay(shortUrl = shortUrlResult, error = errorMessage)
+}
 
-    // 1. Input Form
+
+
+// --- Extracted Business Logic ---
+private fun handleSubmit(
+    inputUrl: String,
+    setLongUrl: (String) -> Unit,
+    setShortUrl: (String) -> Unit,
+    setError: (String) -> Unit
+) {
+    if (inputUrl.isNotBlank()) {
+        try {
+            val dataModel = longUrlDataModel(inputUrl)
+            setError("") // Reset error message on a fresh, valid attempt
+
+            scope.launch {
+                val response = getShortId(dataModel)
+                setShortUrl(response)
+                setLongUrl("") // Clear the text input box on success
+            }
+        } catch (e: Exception) {
+            setShortUrl("") // Reset results so old links don't display
+            setError("Please enter a valid URL layout (e.g, www.wikipedia.org).")
+        }
+    }
+}
+
+
+// --- Visual Components ---
+
+// 1. Simple Title Component
+private fun ChildrenBuilder.renderTitle() {
+    h1 { +"Hello!" }
+}
+
+// 2. Simple LineBreaker Component
+private fun ChildrenBuilder.renderLineBreaker() {
+    br {}
+}
+
+// 3. Simple Input Component
+private fun ChildrenBuilder.renderInput(
+    currentValue: String,
+    onValueChange: (String) -> Unit
+) {
     input {
         className = ClassName("url-input-field")
         type = web.html.InputType.text
-        value = newLongURL
-        onChange = { event ->
-            newLongURL = event.target.value
-        }
+        value = currentValue
+        onChange = { event -> onValueChange(event.target.value) }
     }
+}
 
-    // 2. The Action Button
+// 4. Simple Action Button Component
+private fun ChildrenBuilder.renderButton(onButtonClick: () -> Unit) {
     button {
+        className = ClassName("action-button")
+        onClick = { onButtonClick() }
         +"Get Shortened Link"
-        onClick = {
-            if (newLongURL.isNotBlank()) {
-                try {
-                    // Attempt validation/instantiation
-                    val dataModel = longUrlDataModel(newLongURL)
-                    errorMessage = "" // Reset error message on a fresh, valid attempt
+    }
+}
 
-                    scope.launch {
-                        val response = getShortId(dataModel)
-                        shortUrlResult = response
-                    }
-                } catch (e: Exception) {
-                    // Catch local URL validation errors specifically
-                    shortUrlResult = "" // Reset results so old links don't display
-                    errorMessage = "Please enter a valid URL layout (e.g, www.wikipedia.org)."
-                }
-            }
+// 5. Simple Error Display Component
+private fun ChildrenBuilder.renderErrorDisplay(message: String) {
+    if (message.isNotBlank()) {
+        div {
+            p { +message }
         }
     }
+}
 
-    br {}
-    br {}
-
-    // 3. Error Container UI
-    if (errorMessage.isNotBlank()) {
+// 6. Simple Success Display Component
+private fun ChildrenBuilder.renderSuccessDisplay(shortUrl: String, error: String) {
+    if (shortUrl.isNotBlank() && error.isBlank()) {
         div {
-            p {
-                +errorMessage
-            }
-        }
-    }
-
-    // 4. Result container display
-    if (shortUrlResult.isNotBlank() && errorMessage.isBlank()) {
-        div {
-            p {
-                +"Your Shortened Link:"
-            }
-
+            p { +"Your Shortened Link:" }
             a {
-                href = shortUrlResult
+                href = shortUrl
                 target = web.window.WindowTarget._blank
-                +shortUrlResult
+                +shortUrl
             }
         }
     }
