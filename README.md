@@ -78,6 +78,8 @@ http://localhost:8080/
 | `GET` | `/shorten/shortid` | Redirects user to the original long URL destination |
 | `GET` | `/`                | Serves the bundled Kotlin/JS React frontend app |
 
+---
+
 ## 📺 Demo
 
 https://github.com/user-attachments/assets/39d2dbd8-be99-49b0-8fa0-4dbd326d09a5
