@@ -1,25 +1,38 @@
+/* Global Reset and Box Model Setup */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: #f8f9fa;
-    padding: 40px;
+    padding: 20px;
+    min-height: 100vh;
+    max-width: 500px;
+    margin: 0 auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
 h1 {
     color: #212529;
     font-size: 28px;
+    text-align: left;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .url-input-field {
-    margin-right: 12px;
     border: 1px solid #ced4da;
-    border-radius: 6px;
-    width: 320px;
-    transition: border-color 0.15s ease-in-out;
-    padding: 10px 16px;
-    font-size: 15px;
+    border-radius: 8px;
+    width: 100%;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    padding: 16px 20px;
+    font-size: 17px;
+    margin-bottom: 16px;
 }
 
 .url-input-field:focus {
@@ -28,7 +41,73 @@ h1 {
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
+.action-button {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 28px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s ease-in-out;
+
+    /* ALIGN TO RIGHT CLEANLY */
+    display: block;
+    width: max-content;
+    margin-left: auto;
+    margin-right: 0;
+}
+
 .action-button:hover {
     opacity: 0.85;
 }
 
+/* ANTI-JUMP: Container space is reserved immediately but stays transparent */
+.result-container {
+    margin-top: 20px;
+    padding: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    width: 100%;
+    min-height: 74px; /* Reserves layout size to match link display perfectly */
+    opacity: 0; /* Hides background and borders entirely before link is ready */
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none; /* Prevents users clicking invisible elements */
+}
+
+.result-container.show {
+    opacity: 1;
+    pointer-events: auto; /* Re-enables text selection and clicking link */
+}
+
+.error-text {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+/* Responsive Mobile Web (MWeb) Optimizations */
+@media (max-width: 575.98px) {
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 14px;
+    }
+
+    .url-input-field {
+        padding: 12px 16px;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .action-button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .result-container {
+        margin-top: 16px;
+        min-height: 70px;
+    }
+}

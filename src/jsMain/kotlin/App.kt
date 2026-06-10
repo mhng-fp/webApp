@@ -5,7 +5,6 @@ import org.example.backend.longUrlDataModel
 import react.Props
 import react.FC
 import react.dom.html.ReactHTML.a
-import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
@@ -43,12 +42,8 @@ val App = FC<Props> {
             setError = { errorMessage = it }
         )
     })
-    renderLineBreaker()
-    renderLineBreaker()
-    renderErrorDisplay(message = errorMessage)
-    renderSuccessDisplay(shortUrl = shortUrlResult, error = errorMessage)
+    renderResultDisplay(shortUrl = shortUrlResult, error = errorMessage)
 }
-
 
 
 // --- Extracted Business Logic ---
@@ -80,12 +75,7 @@ private fun handleSubmit(
 
 // 1. Simple Title Component
 private fun ChildrenBuilder.renderTitle() {
-    h1 { +"Hello!" }
-}
-
-// 2. Simple LineBreaker Component
-private fun ChildrenBuilder.renderLineBreaker() {
-    br {}
+    h1 { +"Enter your link" } // Updated string to match your responsive layout mockup
 }
 
 // 3. Simple Input Component
@@ -97,6 +87,7 @@ private fun ChildrenBuilder.renderInput(
         className = ClassName("url-input-field")
         type = web.html.InputType.text
         value = currentValue
+        placeholder = "https://example.com" // Added placeholder for professional UX
         onChange = { event -> onValueChange(event.target.value) }
     }
 }
@@ -106,28 +97,34 @@ private fun ChildrenBuilder.renderButton(onButtonClick: () -> Unit) {
     button {
         className = ClassName("action-button")
         onClick = { onButtonClick() }
-        +"Get Shortened Link"
+        +"Submit"
     }
 }
 
-// 5. Simple Error Display Component
-private fun ChildrenBuilder.renderErrorDisplay(message: String) {
-    if (message.isNotBlank()) {
-        div {
-            p { +message }
-        }
-    }
-}
+// 5. Simple Result Display Component
+private fun ChildrenBuilder.renderResultDisplay(shortUrl: String, error: String) {
+    val hasError = error.isNotBlank()
+    val hasSuccess = shortUrl.isNotBlank() && !hasError
+    val isVisible = hasError || hasSuccess
 
-// 6. Simple Success Display Component
-private fun ChildrenBuilder.renderSuccessDisplay(shortUrl: String, error: String) {
-    if (shortUrl.isNotBlank() && error.isBlank()) {
-        div {
-            p { +"Your Shortened Link:" }
-            a {
-                href = shortUrl
-                target = web.window.WindowTarget._blank
-                +shortUrl
+    div {
+        // Keeps container layout footprint alive, appends "show" if ready
+        className = ClassName(if (isVisible) "result-container show" else "result-container")
+
+        when {
+            hasError -> {
+                p {
+                    className = ClassName("error-text")
+                    +error
+                }
+            }
+            hasSuccess -> {
+                p { +"Your Shortened Link:" }
+                a {
+                    href = shortUrl
+                    target = web.window.WindowTarget._blank
+                    +shortUrl
+                }
             }
         }
     }
