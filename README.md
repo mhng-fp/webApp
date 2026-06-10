@@ -5,12 +5,6 @@ This project uses a Kotlin Multiplatform (KMP) architecture to share data serial
 
 ---
 
-## 📺 Demo
-
-https://github.com/user-attachments/assets/39d2dbd8-be99-49b0-8fa0-4dbd326d09a5
-
----
-
 ## 🛠️ Tech Stack
 
 This project is structured as a **full-stack monorepo**
@@ -83,3 +77,9 @@ http://localhost:8080/
 | `POST` | `/shorten`         | Accepts long URL, returns short code payload |
 | `GET` | `/shorten/shortid` | Redirects user to the original long URL destination |
 | `GET` | `/`                | Serves the bundled Kotlin/JS React frontend app |
+
+## 📺 Demo
+
+https://github.com/user-attachments/assets/39d2dbd8-be99-49b0-8fa0-4dbd326d09a5
+
+---
