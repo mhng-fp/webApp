@@ -77,6 +77,16 @@ http://localhost:8080/
 
 ## 📺 Demo
 
-https://github.com/user-attachments/assets/39d2dbd8-be99-49b0-8fa0-4dbd326d09a5
+
+
+https://github.com/user-attachments/assets/b36fa1cc-22a7-4a87-841b-0824d2ff1384
+
+
+
+https://github.com/user-attachments/assets/979f63a6-7391-44a9-a935-3a01f63c6254
+
+
+
+
 
 ---
