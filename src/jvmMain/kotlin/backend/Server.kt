@@ -14,7 +14,6 @@ import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.netty.handler.codec.compression.StandardCompressionOptions.gzip
-import longUrlDataModel
 import java.io.File
 
 val shortener = UrlShortener()
@@ -51,7 +50,7 @@ fun main() {
                 route("/shorten") {
                     post {
                         val longUrl = call.receive<longUrlDataModel>()
-                        val shortId= shortener.shorten(longUrl.longUrl)
+                        val shortId= shortener.shorten(longUrl.sanitizedUrl)
                         call.respond(shortId)
                     }
                     get("/{id}") {

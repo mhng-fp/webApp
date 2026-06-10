@@ -1,6 +1,7 @@
 import react.useState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.example.backend.longUrlDataModel
 import react.Props
 import react.FC
 import react.dom.html.ReactHTML.a
@@ -16,21 +17,21 @@ import web.cssom.ClassName
 
 private val scope = MainScope()
 
-// This line tells Webpack to fetch the file from your resources folder
 @JsModule("./App.css")
 @JsNonModule
 external val styles: dynamic
 
 val App = FC<Props> {
     val cssModulesPlaceholder = styles
-    var newLongURL by useState("") // Tracks what the user types in the input box
+    var newLongURL by useState("")
     var shortUrlResult by useState("")
+    var errorMessage by useState("")
 
     h1 {
         +"Hello!"
     }
 
-    // 1. Add an Input Form
+    // 1. Input Form
     input {
         className = ClassName("url-input-field")
         type = web.html.InputType.text
@@ -40,15 +41,24 @@ val App = FC<Props> {
         }
     }
 
-    // 2. Add the Action Button
+    // 2. The Action Button
     button {
         +"Get Shortened Link"
         onClick = {
             if (newLongURL.isNotBlank()) {
-                scope.launch {
-                    val response = getShortId(longUrlDataModel(newLongURL))
-                    shortUrlResult = response
-                    newLongURL = "" // Clear the text input box
+                try {
+                    // Attempt validation/instantiation
+                    val dataModel = longUrlDataModel(newLongURL)
+                    errorMessage = "" // Reset error message on a fresh, valid attempt
+
+                    scope.launch {
+                        val response = getShortId(dataModel)
+                        shortUrlResult = response
+                    }
+                } catch (e: Exception) {
+                    // Catch local URL validation errors specifically
+                    shortUrlResult = "" // Reset results so old links don't display
+                    errorMessage = "Please enter a valid URL layout (e.g, www.wikipedia.org)."
                 }
             }
         }
@@ -57,17 +67,25 @@ val App = FC<Props> {
     br {}
     br {}
 
-    // 3. Conditionally display the result container ONLY when shortUrlResult is not empty
-    if (shortUrlResult.isNotBlank()) {
+    // 3. Error Container UI
+    if (errorMessage.isNotBlank()) {
+        div {
+            p {
+                +errorMessage
+            }
+        }
+    }
+
+    // 4. Result container display
+    if (shortUrlResult.isNotBlank() && errorMessage.isBlank()) {
         div {
             p {
                 +"Your Shortened Link:"
             }
 
-            // Display the short URL inside a clickable anchor link tag
             a {
                 href = shortUrlResult
-                target = web.window.WindowTarget._blank // Opens link in a new tab
+                target = web.window.WindowTarget._blank
                 +shortUrlResult
             }
         }

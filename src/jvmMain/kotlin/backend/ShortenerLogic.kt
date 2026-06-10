@@ -17,18 +17,15 @@ class UrlShortener(private val domain: String = "http://localhost:8080/shorten/"
      * Shortens a given long URL string.
      */
     fun shorten(longUrl: String): String {
-        // Validate URL format before processing
-        val sanitizedUrl = cleanUrl(longUrl)
-
         // Return existing shortened token if URL was already processed
-        if (urlToIdMap.containsKey(sanitizedUrl)) {
-            return domain + encodeBase62(urlToIdMap[sanitizedUrl]!!)
+        if (urlToIdMap.containsKey(longUrl)) {
+            return domain + encodeBase62(urlToIdMap[longUrl]!!)
         }
 
         // Save entry and increment the counter
         val id = currentId++
-        idToUrlMap[id] = sanitizedUrl
-        urlToIdMap[sanitizedUrl] = id
+        idToUrlMap[id] = longUrl
+        urlToIdMap[longUrl] = id
 
         return domain + encodeBase62(id)
     }
@@ -64,18 +61,5 @@ class UrlShortener(private val domain: String = "http://localhost:8080/shorten/"
             num = num * base + allowedCharacters.indexOf(char)
         }
         return num
-    }
-
-    /**
-     * Simple validation and sanitization utility.
-     */
-    private fun cleanUrl(url: String): String {
-        val formatted = if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            "https://$url"
-        } else url
-
-        // Triggers exception if string is totally malformed
-        URL(formatted).toURI()
-        return formatted
     }
 }
