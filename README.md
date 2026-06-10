@@ -7,7 +7,7 @@ This project uses a Kotlin Multiplatform (KMP) architecture to share data serial
 
 ## 📺 Demo
 
-<video src="webApp/demo.mov" width="100%" controls></video>
+https://github.com/user-attachments/assets/39d2dbd8-be99-49b0-8fa0-4dbd326d09a5
 
 ---
 
