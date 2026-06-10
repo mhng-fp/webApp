@@ -1,11 +1,10 @@
 # 🔗 Kotlin Multiplatform URL Shortener
 
 This is a web application designed to instantly transform long, unwieldy URLs into clean, shareable aliases.
-This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface.
+This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface. It serves as a blueprint for full-stack Kotlin development.
 
 ## 🛠️ Tech Stack
 
-This project is structured as a **full-stack monorepo**
 *   **Backend:** Kotlin JVM, Ktor Server
 *   **Frontend:** Kotlin/JS browser app with Kotlin-React wrappers
 *   **Shared Logic:** Kotlinx Serialization for JSON data exchange
