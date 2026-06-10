@@ -1,7 +1,5 @@
 package org.example.backend
 
-import java.net.URL
-
 class UrlShortener(private val domain: String = "http://localhost:8080/shorten/") {
 
     // Character pool for Base62 encoding
