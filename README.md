@@ -1,6 +1,13 @@
 # 🔗 Kotlin Multiplatform URL Shortener
 
-A modern, lightweight, and high-performance URL shortener application. This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface.
+Kotlin-React URL Shortener is a web application designed to instantly transform long, unwieldy URLs into clean, shareable aliases.
+This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface.
+
+---
+
+## 📺 Demo
+
+<video src="/demo.mov" width="100%" controls></video>
 
 ---
 
@@ -42,17 +49,17 @@ A modern, lightweight, and high-performance URL shortener application. This proj
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com
+git clone https://github.com/mhng-fp/webApp.git
 cd webApp
 ```
 
-### 1. Build the Entire Application
+### 2. Built the Development Environment
 Compile the JS frontend, bundle assets via Webpack, and assemble the final server fat-JAR:
 ```bash
 ./gradlew clean jvmJar
 ```
 
-### 2. Run the Backend Server
+### 3. Run the Backend Server
 Launch the Ktor application locally on your machine:
 ```bash
 ./gradlew jvmRun
@@ -60,10 +67,18 @@ Launch the Ktor application locally on your machine:
 
 ---
 
-## 🔌 API Endpoints (Planned / Default)
+### 4. Launch the Application
+open this on your browser:
+```text
+http://localhost:8080/
+```
 
-| Method | Endpoint    | Description |
-| :--- |:------------| :--- |
-| `POST` | `/shorten`  | Accepts long URL, returns short code payload |
-| `GET` | `/{id}`     | Redirects user to the original long URL destination |
-| `GET` | `/`         | Serves the bundled Kotlin/JS React frontend app |
+---
+
+## 🔌 API Endpoints
+
+| Method | Endpoint           | Description |
+| :--- |:-------------------| :--- |
+| `POST` | `/shorten`         | Accepts long URL, returns short code payload |
+| `GET` | `/shorten/shortid` | Redirects user to the original long URL destination |
+| `GET` | `/`                | Serves the bundled Kotlin/JS React frontend app |
