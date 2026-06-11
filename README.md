@@ -1,4 +1,4 @@
-# 🔗 Kotlin Multiplatform URL Shortener
+# 🔗 URL Shortener
 
 This is a web application designed to instantly transform long, unwieldy URLs into clean, shareable aliases.
 This project uses a Kotlin Multiplatform (KMP) architecture to share data serialization logic seamlessly between the backend server and the frontend user interface. It serves as a blueprint for full-stack Kotlin development.
@@ -16,7 +16,6 @@ This project uses a Kotlin Multiplatform (KMP) architecture to share data serial
 *   **Fast Shortening:**  Instantly convert long URLs into compact, shareable links.
 *   **Unified Codebase:**  Shares API model definitions between frontend and backend.
 *   **Modern UI:** Single-page frontend built with Kotlin-wrapped React components.
-*   **Optimized Pipeline:** Pre-configured Webpack task dependencies prevent task-graph compilation errors during rapid local development.
 
 ## 📂 Project Structure
 ```text
@@ -34,7 +33,7 @@ This project uses a Kotlin Multiplatform (KMP) architecture to share data serial
 
 ### Prerequisites
 
-*   **JDK 8** or higher (Target configured to JVM 1.8)
+*   JDK8 or higher (Target configured to JVM 1.8)
 *   Gradle installed
 
 ### 1. Clone the Repository
