@@ -75,10 +75,10 @@ private fun handleSubmit(
 
 // 1. Simple Title Component
 private fun ChildrenBuilder.renderTitle() {
-    h1 { +"Enter your link" } // Updated string to match your responsive layout mockup
+    h1 { +"Enter your link" }
 }
 
-// 3. Simple Input Component
+// 2. Simple Input Component
 private fun ChildrenBuilder.renderInput(
     currentValue: String,
     onValueChange: (String) -> Unit
@@ -87,12 +87,12 @@ private fun ChildrenBuilder.renderInput(
         className = ClassName("url-input-field")
         type = web.html.InputType.text
         value = currentValue
-        placeholder = "https://example.com" // Added placeholder for professional UX
+        placeholder = "https://example.com"
         onChange = { event -> onValueChange(event.target.value) }
     }
 }
 
-// 4. Simple Action Button Component
+// 3. Simple Action Button Component
 private fun ChildrenBuilder.renderButton(onButtonClick: () -> Unit) {
     button {
         className = ClassName("action-button")
@@ -101,7 +101,7 @@ private fun ChildrenBuilder.renderButton(onButtonClick: () -> Unit) {
     }
 }
 
-// 5. Simple Result Display Component
+// 4. Simple Result Display Component
 private fun ChildrenBuilder.renderResultDisplay(shortUrl: String, error: String) {
     val hasError = error.isNotBlank()
     val hasSuccess = shortUrl.isNotBlank() && !hasError
